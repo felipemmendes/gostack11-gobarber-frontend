@@ -1,4 +1,3 @@
-// dependencies imports
 import React, { useCallback, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
@@ -6,25 +5,20 @@ import { Form } from '@unform/web';
 import * as Yup from 'yup';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 
-// custom hooks imports
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 
-// functions imports
 import getValidationErrors from '../../utils/getValidationsErrors';
 
-// components imports
 import { Container, Content, Background } from './styles';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-// assets imports
 import logoImg from '../../assets/logo.svg';
 
-// interfaces
 interface SignInFormData {
-  signInEmail: string;
-  signInPassword: string;
+  email: string;
+  password: string;
 }
 
 const SignIn: React.FC = () => {
@@ -40,19 +34,21 @@ const SignIn: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          signInEmail: Yup.string()
+          email: Yup.string()
             .required('Digite seu e-mail')
             .email('Digite um e-mail válido'),
-          signInPassword: Yup.string().required('Digite sua senha'),
+          password: Yup.string().required('Digite sua senha'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
+        const { email, password } = data;
+
         await signIn({
-          email: data.signInEmail,
-          password: data.signInPassword,
+          email,
+          password,
         });
 
         history.push('/dashboard');
@@ -83,16 +79,16 @@ const SignIn: React.FC = () => {
           <h1>Faça seu logon</h1>
 
           <Input
-            name="signInEmail"
-            id="signInEmail"
+            name="email"
+            id="email"
             icon={FiMail}
-            type="email"
+            type="text"
             placeholder="E-mail"
           />
 
           <Input
-            name="signInPassword"
-            id="signInPassword"
+            name="password"
+            id="password"
             icon={FiLock}
             type="password"
             placeholder="Senha"
@@ -100,7 +96,7 @@ const SignIn: React.FC = () => {
 
           <Button type="submit">Entrar</Button>
 
-          <a href="forgot">Esqueci minha senha</a>
+          <Link to="/forgot-password">Esqueci minha senha</Link>
         </Form>
 
         <Link to="/signup">

@@ -45,6 +45,7 @@ const Input: React.FC<InputProps> = ({ icon: Icon, name, id, ...rest }) => {
   return (
     <Container
       htmlFor={id}
+      name={name}
       isFocused={isFocused}
       isFilled={isFilled}
       hasError={!!error}
